@@ -19,28 +19,15 @@ The Transliteration API is a FastAPI-based application that provides endpoints f
 
 ### Transliteration Endpoints
 
-- **`GET /transliterate/AutoDetectPersioArabicScript`** - Auto-detects Persian-Arabic script and transliterates accordingly.
-- **`GET /transliterate/AutoDetectSindhiHindiScript`** - Auto-detects Sindhi-Hindi script and transliterates accordingly.
-- **`GET /transliterate/GurmukhiToShahmukhi`** - Converts Gurmukhi script to Shahmukhi script.
-- **`GET /transliterate/HindiToUrdu`** - Converts Hindi script to Urdu script.
-- **`GET /transliterate/ShahmukhiToGurmukhi`** - Converts Shahmukhi script to Gurmukhi script.
-- **`GET /transliterate/SindhiDEVToRoman`** - Converts SindhiDEV script to Roman script.
-- **`GET /transliterate/SindhiDEVToSindhiUR`** - Converts SindhiDEV script to SindhiUR script.
-- **`GET /transliterate/SindhiURToSindhiDEV`** - Converts SindhiUR script to SindhiDEV script.
-- **`GET /transliterate/UrduToHindi`** - Converts Urdu script to Hindi script.
-
-## Code Explanation
-
-### Main Components
-
-1. **Root Route (`GET /`)**: Lists all available transliteration routes.
-2. **Transliteration Endpoint** (`GET /transliterate/{transliteration_type}`): A generic route for handling various transliteration requests. This route takes in the transliteration type and the text to be processed.
-3. **External API Request** (`process_text()`): Sends the text to an external transliteration API, specified by the `service` parameter, and processes the response.
-
-### Functions
-
-- **`process_text(text: str, service: str) -> str`**: Sends a request to the external API with the specified service type and processes the response, handling any necessary JSON decoding.
-- **`transliterate_endpoint(transliteration_type: str, text: str)`**: Receives transliteration requests, validates the type, and uses `process_text()` to handle processing.
+- **`POST /transliterate/AutoDetectPersioArabicScript`** - Auto-detects Persian-Arabic script and transliterates accordingly.
+- **`POST /transliterate/AutoDetectSindhiHindiScript`** - Auto-detects Sindhi-Hindi script and transliterates accordingly.
+- **`POST /transliterate/GurmukhiToShahmukhi`** - Converts Gurmukhi script to Shahmukhi script.
+- **`POST /transliterate/HindiToUrdu`** - Converts Hindi script to Urdu script.
+- **`POST /transliterate/ShahmukhiToGurmukhi`** - Converts Shahmukhi script to Gurmukhi script.
+- **`POST /transliterate/SindhiDEVToRoman`** - Converts SindhiDEV script to Roman script.
+- **`POST /transliterate/SindhiDEVToSindhiUR`** - Converts SindhiDEV script to SindhiUR script.
+- **`POST /transliterate/SindhiURToSindhiDEV`** - Converts SindhiUR script to SindhiDEV script.
+- **`POST /transliterate/UrduToHindi`** - Converts Urdu script to Hindi script.
 
 ### Example JSON Output
 
@@ -56,8 +43,8 @@ Each endpoint returns a JSON response with the transliterated text:
 ##### 1. Clone the Repository:
 
 ```bash
-git clone https://github.com/your-username/your-repository-name.git
-cd your-repository-name
+git clone https://github.com/Agamya-Samuel/Indicwiki-transliterate-api.git
+cd Indicwiki-transliterate-api
 ```
 
 ##### 2. Install Dependencies:
@@ -80,15 +67,19 @@ Once the server is running, you can make requests to the API using a tool like c
 ### Example Request
 Transliterate Text from Hindi to Urdu
 ```bash
-curl -X 'GET' \
-  'http://127.0.0.1:8000/transliterate/HindiToUrdu?text=नमस्ते' \
-  -H 'accept: application/json'
+curl -X 'POST' \
+  'http://127.0.0.1:8000/transliterate/HindiToUrdu' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "text": "नमस्ते"
+}'
 ```
 
 ### Example JSON Response
 ```json
 {
-  "result": "السلام علیکم"
+  "result": "ہیلو"
 }
 ```
 

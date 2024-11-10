@@ -1,6 +1,7 @@
 # app.py
 
 from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
 from transliteration_utils import process_text
 
 app = FastAPI(
@@ -8,6 +9,10 @@ app = FastAPI(
     description="API for various transliteration conversions between different scripts.",
     version="1.0.0"
 )
+
+class TransliterationRequest(BaseModel):
+    text: str
+
 @app.get("/", tags=["Root"])
 async def root():
     """
@@ -26,8 +31,8 @@ async def root():
     ]
     return {"available_routes": available_routes}
 
-@app.get("/transliterate/", tags=["Transliteration"])
-async def transliterate_endpoint(transliteration_type: str, text: str):
+@app.post("/transliterate/", tags=["Transliteration"])
+async def transliterate_endpoint(transliteration_type: str, request: TransliterationRequest):
     """
     Transliterate text based on the specified transliteration type.
     
@@ -35,7 +40,7 @@ async def transliterate_endpoint(transliteration_type: str, text: str):
     - **text**: The text to be transliterated
     """
     try:
-        result = process_text(text, transliteration_type)
+        result = process_text(request.text, transliteration_type)
         return {"result": result}
     except HTTPException as http_err:
         raise http_err
@@ -43,41 +48,41 @@ async def transliterate_endpoint(transliteration_type: str, text: str):
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 # Individual endpoints for each transliteration type
-@app.get("/transliterate/AutoDetectPersioArabicScript", tags=["Transliteration"])
-async def autodetect_persio_arabic_script(text: str):
-    return await transliterate_endpoint("AutoDetectPersioArabicScript", text)
+@app.post("/transliterate/AutoDetectPersioArabicScript", tags=["Transliteration"])
+async def autodetect_persio_arabic_script(request: TransliterationRequest):
+    return await transliterate_endpoint("AutoDetectPersioArabicScript", request)
 
-@app.get("/transliterate/AutoDetectSindhiHindiScript", tags=["Transliteration"])
-async def autodetect_sindhi_hindi_script(text: str):
-    return await transliterate_endpoint("AutoDetectSindhiHindiScript", text)
+@app.post("/transliterate/AutoDetectSindhiHindiScript", tags=["Transliteration"])
+async def autodetect_sindhi_hindi_script(request: TransliterationRequest):
+    return await transliterate_endpoint("AutoDetectSindhiHindiScript", request)
 
-@app.get("/transliterate/GurmukhiToShahmukhi", tags=["Transliteration"])
-async def gurmukhi_to_shahmukhi(text: str):
-    return await transliterate_endpoint("Gurmukhi2Shahmukhi", text)
+@app.post("/transliterate/GurmukhiToShahmukhi", tags=["Transliteration"])
+async def gurmukhi_to_shahmukhi(request: TransliterationRequest):
+    return await transliterate_endpoint("Gurmukhi2Shahmukhi", request)
 
-@app.get("/transliterate/HindiToUrdu", tags=["Transliteration"])
-async def hindi_to_urdu(text: str):
-    return await transliterate_endpoint("Hindi2Urdu", text)
+@app.post("/transliterate/HindiToUrdu", tags=["Transliteration"])
+async def hindi_to_urdu(request: TransliterationRequest):
+    return await transliterate_endpoint("Hindi2Urdu", request)
 
-@app.get("/transliterate/ShahmukhiToGurmukhi", tags=["Transliteration"])
-async def shahmukhi_to_gurmukhi(text: str):
-    return await transliterate_endpoint("Shahmukhi2Gurmukhi", text)
+@app.post("/transliterate/ShahmukhiToGurmukhi", tags=["Transliteration"])
+async def shahmukhi_to_gurmukhi(request: TransliterationRequest):
+    return await transliterate_endpoint("Shahmukhi2Gurmukhi", request)
 
-@app.get("/transliterate/SindhiDEVToRoman", tags=["Transliteration"])
-async def sindhi_dev_to_roman(text: str):
-    return await transliterate_endpoint("SindhiDEV2Roman", text)
+@app.post("/transliterate/SindhiDEVToRoman", tags=["Transliteration"])
+async def sindhi_dev_to_roman(request: TransliterationRequest):
+    return await transliterate_endpoint("SindhiDEV2Roman", request)
 
-@app.get("/transliterate/SindhiDEVToSindhiUR", tags=["Transliteration"])
-async def sindhi_dev_to_sindhi_ur(text: str):
-    return await transliterate_endpoint("SindhiDEV2SindhiUR", text)
+@app.post("/transliterate/SindhiDEVToSindhiUR", tags=["Transliteration"])
+async def sindhi_dev_to_sindhi_ur(request: TransliterationRequest):
+    return await transliterate_endpoint("SindhiDEV2SindhiUR", request)
 
-@app.get("/transliterate/SindhiURToSindhiDEV", tags=["Transliteration"])
-async def sindhi_ur_to_sindhi_dev(text: str):
-    return await transliterate_endpoint("SindhiUR2SindhiDEV", text)
+@app.post("/transliterate/SindhiURToSindhiDEV", tags=["Transliteration"])
+async def sindhi_ur_to_sindhi_dev(request: TransliterationRequest):
+    return await transliterate_endpoint("SindhiUR2SindhiDEV", request)
 
-@app.get("/transliterate/UrduToHindi", tags=["Transliteration"])
-async def urdu_to_hindi(text: str):
-    return await transliterate_endpoint("Urdu2Hindi", text)
+@app.post("/transliterate/UrduToHindi", tags=["Transliteration"])
+async def urdu_to_hindi(request: TransliterationRequest):
+    return await transliterate_endpoint("Urdu2Hindi", request)
 
 if __name__ == "__main__":
     import uvicorn

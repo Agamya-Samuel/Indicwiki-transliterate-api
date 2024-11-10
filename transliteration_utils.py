@@ -4,6 +4,8 @@ from http.client import HTTPException
 import requests
 import json
 
+TRANSLATION_API = "https://sangam.learnpunjabi.org/SindhiTransliteration.asmx"
+
 def process_text(text: str, service: str) -> str:
     """
     Makes a request to the external transliteration service with specified text and service type.
@@ -15,7 +17,7 @@ def process_text(text: str, service: str) -> str:
     Returns:
     - str: The response text from the transliteration service.
     """
-    api_endpoint = f"https://sangam.learnpunjabi.org/SindhiTransliteration.asmx/{service}"
+    api_endpoint = f"{TRANSLATION_API}/{service}"
     text_ip = {"input": text}
 
     headers = {
