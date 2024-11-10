@@ -4,6 +4,8 @@
 
 The Transliteration API is a FastAPI-based application that provides endpoints for various script transliterations. This API enables users to transliterate text between different scripts and languages, including Persian-Arabic, Sindhi-Hindi, Gurmukhi-Shahmukhi, and more, using an external service for processing.
 
+![Transliteration API](/screencapture.png)
+
 ## Features
 
 - **Dynamic Transliteration**: Supports multiple script conversions, allowing seamless text transliterations between languages.
